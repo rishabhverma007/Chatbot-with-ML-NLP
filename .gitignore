@@ -1,0 +1,48 @@
+# Python virtual environment
+backend/venv/
+backend/.venv/
+venv/
+.venv/
+ENV/
+
+# Python cache and compiled files
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Local environment files (contains secret API keys)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+frontend/.env.local
+
+# Local vector database storage
+backend/chroma_data/
+
+# Dynamic ingestion knowledge base files (optional, ignore to keep repo clean)
+# backend/knowledge_base/*
+# !backend/knowledge_base/.gitkeep
+
+# Node.js dependencies
+frontend/node_modules/
+node_modules/
+
+# Next.js build output
+frontend/.next/
+frontend/out/
+frontend/build/
+.next/
+out/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
