@@ -12,7 +12,7 @@ export default function Home() {
   const [mode, setMode] = useState<"chitchat" | "knowledge_query">("knowledge_query");
   
   // Custom WebSocket connection hook pointing to backend uvicorn host
-  const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/chat";
+  const wsUrl = process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8000/chat";
   const {
     messages,
     isConnected,

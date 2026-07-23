@@ -75,7 +75,10 @@ export default function ChatWindow({
   };
 
   return (
-    <GlassCard className="flex flex-col h-[70vh] w-full max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl p-0 relative bg-black/40 border-white/10">
+    <GlassCard 
+      className="h-[70vh] w-full max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl p-0 relative bg-black/40 border-white/10"
+      contentClassName="flex flex-col h-full w-full"
+    >
       
       {/* Upper header block */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-black/20">

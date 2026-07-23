@@ -33,7 +33,7 @@ export interface ChatMessage {
 }
 
 export function useWebSocket(
-  url: string = process.env.NEXT_PUBLIC_WS_URL || "ws://localhost:8000/chat"
+  url: string = process.env.NEXT_PUBLIC_WS_URL || "ws://127.0.0.1:8000/chat"
 ) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -56,13 +56,31 @@ export function useWebSocket(
       if (socketRef.current?.readyState === WebSocket.OPEN) return;
 
       setIsConnecting(true);
-      socket = new WebSocket(url);
+      
+      let connectionUrl = url;
+      // If it is the default ws URL or empty, resolve host dynamically to match frontend origin
+      if (
+        !connectionUrl ||
+        connectionUrl === "ws://localhost:8000/chat" ||
+        connectionUrl === "ws://127.0.0.1:8000/chat"
+      ) {
+        if (typeof window !== "undefined") {
+          const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+          let hostname = window.location.hostname || "127.0.0.1";
+          if (hostname === "localhost") {
+            hostname = "127.0.0.1";
+          }
+          connectionUrl = `${protocol}//${hostname}:8000/chat`;
+        }
+      }
+
+      socket = new WebSocket(connectionUrl);
       socketRef.current = socket;
 
       socket.onopen = () => {
         setIsConnected(true);
         setIsConnecting(false);
-        console.log("WebSocket connected to backend.");
+        console.log(`WebSocket connected to backend: ${connectionUrl}`);
       };
 
       socket.onmessage = (event) => {
@@ -131,16 +149,16 @@ export function useWebSocket(
         }
       };
 
-      socket.onclose = () => {
+      socket.onclose = (event) => {
         setIsConnected(false);
         setIsConnecting(false);
         setStatus("idle");
-        console.log("WebSocket disconnected.");
+        console.log(`WebSocket disconnected (Code: ${event.code}, Reason: ${event.reason || "None"}).`);
         reconnectTimeout = setTimeout(connect, 3000);
       };
 
-      socket.onerror = (err) => {
-        console.error("WebSocket error occurred:", err);
+      socket.onerror = (event) => {
+        console.error(`WebSocket error occurred on connection to ${connectionUrl}:`, event);
         socket?.close();
       };
     };

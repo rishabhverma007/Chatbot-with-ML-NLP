@@ -3,10 +3,11 @@ import React from "react";
 interface GlassCardProps {
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   id?: string;
 }
 
-export default function GlassCard({ children, className = "", id }: GlassCardProps) {
+export default function GlassCard({ children, className = "", contentClassName = "", id }: GlassCardProps) {
   return (
     <div
       id={id}
@@ -14,7 +15,7 @@ export default function GlassCard({ children, className = "", id }: GlassCardPro
     >
       {/* Visual ambient light flare */}
       <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.01] to-white/[0.05] pointer-events-none" />
-      <div className="relative z-10">{children}</div>
+      <div className={`relative z-10 ${contentClassName}`}>{children}</div>
     </div>
   );
 }
